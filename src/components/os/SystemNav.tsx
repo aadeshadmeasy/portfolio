@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ownerProfile } from "@/content/owner-profile";
 import { useOS } from "@/components/os/OSProvider";
+import type { ThemeMode } from "@/lib/types";
+import { themeLabels } from "@/lib/themes";
 
 export function SystemNav({ onSearchOpen }: { onSearchOpen: () => void }) {
-  const { openApp } = useOS();
+  const { theme, setTheme, openApp, cycleTheme } = useOS();
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
 
@@ -21,12 +23,13 @@ export function SystemNav({ onSearchOpen }: { onSearchOpen: () => void }) {
         }),
       );
       setDate(
-        now.toLocaleDateString("en-IN", {
-          weekday: "short",
-          day: "numeric",
-          month: "short",
-          timeZone: ownerProfile.identity.timezone,
-        }),
+        now
+          .toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            timeZone: ownerProfile.identity.timezone,
+          })
+          .toUpperCase(),
       );
     };
     update();
@@ -40,53 +43,63 @@ export function SystemNav({ onSearchOpen }: { onSearchOpen: () => void }) {
     { label: "JOURNEY", app: "journey" },
   ];
 
+  const nextTheme = (): ThemeMode =>
+    theme === "day" ? "night" : theme === "night" ? "dark" : "day";
+
   return (
     <header className="os-taskbar" role="banner">
-      <div className="flex items-center gap-1 border-r-2 border-[var(--border)] px-2">
+      <div className="taskbar-brand">
         <Image
-          src="/assets/sprite-aadesh.png"
+          src="/assets/character-aadesh.png"
           alt=""
-          width={18}
-          height={18}
-          style={{ imageRendering: "pixelated" }}
+          width={20}
+          height={20}
+          style={{ imageRendering: "pixelated", objectFit: "cover", objectPosition: "top" }}
         />
-        <span className="font-bold uppercase tracking-wide" style={{ fontFamily: "var(--font-press-start)", fontSize: "8px" }}>
-          {ownerProfile.identity.osName.replace(" ", " ")}
-        </span>
+        <span>{ownerProfile.identity.osName.toUpperCase()}</span>
       </div>
 
-      <nav className="flex items-stretch" aria-label="Main menu">
+      <nav aria-label="Main menu">
         {navItems.map((item) => (
           <button
             key={item.app}
             type="button"
             onClick={() => openApp(item.app, item.label)}
-            className="retro-btn border-0 border-r-2 border-[var(--border)] rounded-none px-3"
-            style={{ boxShadow: "none", fontSize: "14px" }}
+            className="taskbar-menu-btn"
           >
             {item.label}
           </button>
         ))}
-        <button
-          type="button"
-          onClick={onSearchOpen}
-          className="retro-btn border-0 rounded-none px-3"
-          style={{ boxShadow: "none", fontSize: "14px" }}
-        >
+        <button type="button" onClick={onSearchOpen} className="taskbar-menu-btn">
           SEARCH
         </button>
       </nav>
 
-      <div className="ml-auto flex items-stretch">
-        <div className="flex items-center gap-2 border-l-2 border-[var(--border)] px-2 text-sm">
-          <span className="retro-panel px-2 py-0.5 text-xs font-bold" style={{ background: "#00aa00", color: "#fff" }}>
-            BUILDING
-          </span>
-          <span aria-hidden>▮▮▮▯</span>
+      <div className="taskbar-status">
+        <button
+          type="button"
+          className="taskbar-pill dark-btn"
+          onClick={() => setTheme(nextTheme())}
+          aria-label={`Switch theme, current ${themeLabels[theme]}`}
+        >
+          {themeLabels[theme]}
+        </button>
+        <div className="taskbar-pill building">
+          <span>■</span> BUILDING
         </div>
-        <div className="flex items-center border-l-2 border-[var(--border)] px-3 font-mono text-sm tabular-nums">
-          <span className="hidden sm:inline">{date} · </span>
-          {time} IST
+        <div className="taskbar-pill" aria-hidden>
+          ▮▮▮▯
+        </div>
+        <button
+          type="button"
+          className="taskbar-pill cal-btn"
+          onClick={() => openApp("calendar", "Calendar")}
+          aria-label="Open calendar"
+        >
+          CAL
+        </button>
+        <div className="taskbar-pill" style={{ fontFamily: "var(--pixel-font)", fontSize: 13 }}>
+          {date} {time} GMT+5:30
         </div>
       </div>
     </header>

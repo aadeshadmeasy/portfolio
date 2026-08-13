@@ -2,14 +2,36 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { desktopApps } from "@/content/apps";
-import { articles, projects } from "@/content/owner-profile";
+import { articles, ownerProfile } from "@/content/owner-profile";
 import { useOS } from "@/components/os/OSProvider";
 import { fuzzyMatch } from "@/lib/utils";
+import { themeLabels } from "@/lib/themes";
+import type { ThemeMode } from "@/lib/types";
 
 interface CommandPaletteProps {
   open: boolean;
   onClose: () => void;
 }
+
+const APP_COMMANDS: Record<string, string> = {
+  projects: "OPEN PROJECTS — FINDER",
+  results: "OPEN CLIENT RESULTS — PROOF.APP",
+  systems: "OPEN HOW WE WORK — SYSTEMS.APP",
+  achievements: "OPEN ACHIEVEMENTS — VAULT.APP",
+  proof: "OPEN TESTIMONIALS — VOICES.APP",
+  journey: "OPEN JOURNEY — TIMELINE.APP",
+  founder: "OPEN FOUNDER.TXT — NOTEPAD",
+  casefiles: "OPEN CASE FILES — FINDER",
+  fieldnotes: "OPEN AI FIELD NOTES — BLOG.APP",
+  calendar: "OPEN CALENDAR — SCHEDULE.APP",
+  contact: "OPEN LEAVE A MESSAGE — MAIL.APP",
+  browser: "OPEN BROWSER — AADESHNET.APP",
+  whiteboard: "OPEN WHITEBOARD — NOTES.APP",
+  learn: "OPEN LEARN — MEDIA.APP",
+  socials: "OPEN SOCIALS — SHARE.APP",
+  voice: "OPEN AI VOICE AGENT — VOICE.APP",
+  emergency: "OPEN EMERGENCY — SOS.APP",
+};
 
 export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const { openApp, setTheme } = useOS();
@@ -19,33 +41,29 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const items = useMemo(() => {
     const base = [
       ...desktopApps.map((a) => ({
-        type: "App",
-        label: a.name,
-        sub: a.description,
+        type: "APP",
+        label: APP_COMMANDS[a.id] ?? `OPEN ${a.name.toUpperCase()}`,
         action: () => openApp(a.id, a.name),
       })),
-      ...projects.map((p) => ({
-        type: "Project",
-        label: p.name,
-        sub: p.category,
-        action: () => openApp("projects", "Projects"),
-      })),
       ...articles.map((a) => ({
-        type: "Article",
-        label: a.title,
-        sub: a.description,
-        action: () => {
-          window.open(`/blog/${a.slug}`, "_blank");
-        },
+        type: "ARTICLE",
+        label: a.title.toUpperCase(),
+        action: () => window.open(`/blog/${a.slug}`, "_blank"),
       })),
-      { type: "Theme", label: "Switch to Day mode", sub: "Theme", action: () => setTheme("day") },
-      { type: "Theme", label: "Switch to Night mode", sub: "Theme", action: () => setTheme("night") },
-      { type: "Theme", label: "Switch to Dark mode", sub: "Theme", action: () => setTheme("dark") },
-      { type: "Contact", label: "Open Contact", sub: "Book or email", action: () => openApp("contact", "Contact") },
+      ...(["day", "night", "dark"] as ThemeMode[]).map((t) => ({
+        type: "THEME",
+        label: `SWITCH TO ${themeLabels[t]} MODE`,
+        action: () => setTheme(t),
+      })),
+      {
+        type: "CONTACT",
+        label: `EMAIL ${ownerProfile.conversion.email.toUpperCase()}`,
+        action: () => {
+          window.location.href = `mailto:${ownerProfile.conversion.email}`;
+        },
+      },
     ];
-    return base.filter(
-      (i) => fuzzyMatch(query, i.label) || fuzzyMatch(query, i.sub) || fuzzyMatch(query, i.type),
-    );
+    return base.filter((i) => fuzzyMatch(query, i.label));
   }, [openApp, query, setTheme]);
 
   useEffect(() => {
@@ -71,53 +89,47 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
   useEffect(() => {
     setActive(0);
-  }, [query]);
+    if (!open) setQuery("");
+  }, [query, open]);
 
   if (!open) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-[5400] flex items-start justify-center bg-black/40 px-4 pt-24"
-      onClick={onClose}
-      role="presentation"
-    >
-      <div
-        className="w-full max-w-lg rounded-xl border shadow-2xl"
-        style={{ background: "var(--bg-panel-solid)", borderColor: "var(--border)" }}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-label="Command palette"
-      >
-        <input
-          autoFocus
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search apps, projects, articles…"
-          className="w-full border-b bg-transparent px-4 py-3 text-base outline-none"
-          style={{ borderColor: "var(--border)" }}
-        />
-        <ul className="max-h-80 overflow-auto py-2">
+    <div className="search-palette" onClick={onClose} role="presentation">
+      <div className="search-window" onClick={(e) => e.stopPropagation()} role="dialog" aria-label="Search">
+        <div className="search-title">
+          <span>{ownerProfile.identity.osName.toUpperCase()} SEARCH</span>
+          <button type="button" className="retro-btn" onClick={onClose} style={{ fontSize: 11, padding: "2px 8px" }}>
+            ESC
+          </button>
+        </div>
+        <div className="search-input-row">
+          <span aria-hidden>&gt;</span>
+          <input
+            autoFocus
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Open an app or run a command..."
+          />
+        </div>
+        <ul className="search-results">
           {items.map((item, i) => (
-            <li key={`${item.type}-${item.label}`}>
+            <li key={item.label}>
               <button
                 type="button"
                 onClick={() => {
                   item.action();
                   onClose();
                 }}
-                className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm"
-                style={{
-                  background: i === active ? "var(--accent)" : "transparent",
-                  color: i === active ? "#fff" : "inherit",
-                }}
+                className={`search-result-btn${i === active ? " active" : ""}`}
               >
                 <span>{item.label}</span>
-                <span className="text-xs opacity-70">{item.type}</span>
+                <span className="search-result-type">{item.type}</span>
               </button>
             </li>
           ))}
           {items.length === 0 && (
-            <li className="px-4 py-6 text-center text-sm text-[var(--text-muted)]">No results</li>
+            <li className="px-4 py-6 text-center text-sm">No results</li>
           )}
         </ul>
       </div>

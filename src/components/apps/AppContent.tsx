@@ -18,6 +18,9 @@ import { statusLabel } from "@/lib/utils";
 import { ContactApp } from "@/components/apps/ContactApp";
 import { WhiteboardApp } from "@/components/apps/WhiteboardApp";
 import { BrowserApp } from "@/components/apps/BrowserApp";
+import { CalendarApp } from "@/components/apps/CalendarApp";
+import { CaseFilesApp } from "@/components/apps/CaseFilesApp";
+import { FieldNotesApp } from "@/components/apps/FieldNotesApp";
 
 export function AppContent({ appId }: { appId: string }) {
   switch (appId) {
@@ -45,8 +48,14 @@ export function AppContent({ appId }: { appId: string }) {
       return <WhiteboardApp />;
     case "browser":
       return <BrowserApp />;
+    case "casefiles":
+      return <CaseFilesApp />;
+    case "fieldnotes":
+      return <FieldNotesApp />;
     case "contact":
       return <ContactApp />;
+    case "calendar":
+      return <CalendarApp />;
     case "voice":
       return <VoiceApp />;
     default:

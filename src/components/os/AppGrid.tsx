@@ -17,11 +17,11 @@ export function AppGrid() {
             type="button"
             onClick={() => openApp(app.id, app.name)}
             className={`desktop-icon-btn${isOpen ? " is-open" : ""}`}
-            aria-label={`Open ${app.name}: ${app.description}`}
+            aria-label={`Open ${app.name}`}
           >
             {app.badge && <span className="icon-badge">{app.badge}</span>}
             <div className="icon-box">
-              <PixelIcon name={app.icon} />
+              <PixelIcon name={app.icon} size={40} />
             </div>
             <span className="icon-label">{app.name}</span>
             <span className="icon-sublabel">{app.description}</span>

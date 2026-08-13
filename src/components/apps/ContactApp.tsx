@@ -5,6 +5,8 @@ import { ownerProfile } from "@/content/owner-profile";
 
 export function ContactApp() {
   const [copied, setCopied] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [note, setNote] = useState("");
 
   const copyEmail = () => {
     navigator.clipboard?.writeText(ownerProfile.conversion.email);
@@ -12,41 +14,53 @@ export function ContactApp() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const body = encodeURIComponent(note || "Hi Aadesh, reaching out from your portfolio OS.");
+    window.location.href = `mailto:${ownerProfile.conversion.email}?subject=Message%20from%20Aadesh%20OS&body=${body}`;
+    setSent(true);
+  };
+
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold">CONTACT.SYS</h2>
-      <p className="text-sm">Email or LinkedIn — no calls, no WhatsApp.</p>
+      <p className="window-kicker">{ownerProfile.identity.osName} WHITEBOARD</p>
+      <h2 className="window-headline">
+        Leave a <em>message.</em>
+      </h2>
+      <p className="text-sm">Email or LinkedIn — messages open your mail client.</p>
 
-      <div className="flex flex-wrap gap-2">
-        <a href={`mailto:${ownerProfile.conversion.email}`} className="retro-btn retro-btn-primary">
-          EMAIL AADESH
-        </a>
-        <button type="button" onClick={copyEmail} className="retro-btn">
-          {copied ? "COPIED!" : "COPY EMAIL"}
-        </button>
-        <a
-          href={ownerProfile.conversion.linkedin}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="retro-btn"
-        >
-          LINKEDIN
-        </a>
-      </div>
-
-      <div className="retro-panel p-3 font-mono text-sm">
-        <p>{ownerProfile.conversion.email}</p>
-        <p className="mt-1 text-[var(--text-muted)]">{ownerProfile.conversion.linkedin}</p>
-      </div>
-
-      <section>
-        <h3 className="mb-2 font-bold">SERVICES</h3>
-        <ul className="list-none space-y-1 text-sm">
-          {ownerProfile.services.map((s) => (
-            <li key={s.id}>▸ {s.name}</li>
-          ))}
-        </ul>
-      </section>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <label className="block text-sm font-bold">YOUR NOTE</label>
+        <textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder="What should Aadesh build, fix, or remember?"
+          rows={4}
+          className="w-full border-2 border-[var(--border)] bg-white p-2 font-mono text-sm"
+          maxLength={500}
+        />
+        <div className="flex flex-wrap gap-2">
+          <button type="submit" className="retro-btn-green" style={{ width: "auto" }}>
+            + SEND VIA EMAIL
+          </button>
+          <button type="button" onClick={copyEmail} className="retro-btn">
+            {copied ? "COPIED!" : "COPY EMAIL"}
+          </button>
+          <a
+            href={ownerProfile.conversion.linkedin}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="retro-btn"
+          >
+            LINKEDIN
+          </a>
+        </div>
+        {sent && (
+          <p className="text-sm text-[var(--maroon)]" role="status">
+            Opening mail to {ownerProfile.conversion.email}
+          </p>
+        )}
+      </form>
     </div>
   );
 }

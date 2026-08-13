@@ -1,13 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { BootScreen } from "@/components/os/BootScreen";
 import { SystemNav } from "@/components/os/SystemNav";
+import { Wallpaper } from "@/components/os/Wallpaper";
 import { AppGrid } from "@/components/os/AppGrid";
+import { DailyTransmission } from "@/components/os/DailyTransmission";
 import { WindowManager } from "@/components/os/WindowManager";
+import { Dock } from "@/components/os/Dock";
 import { MusicPlayer } from "@/components/os/MusicPlayer";
 import { DesktopPortrait } from "@/components/os/DesktopPortrait";
 import { Companion } from "@/components/os/Companion";
+import { BookingPing } from "@/components/os/BookingPing";
+import { CallTab } from "@/components/os/CallTab";
 import { CommandPalette } from "@/components/os/CommandPalette";
 import { OSProvider } from "@/components/os/OSProvider";
 
@@ -23,6 +29,7 @@ export function Desktop() {
         e.preventDefault();
         setSearchOpen(true);
       }
+      if (e.key === "Escape") setSearchOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -32,17 +39,21 @@ export function Desktop() {
     <OSProvider>
       {!booted && <BootScreen onComplete={onBootComplete} />}
       <div className="os-shell">
-        <div className="os-wallpaper" aria-hidden />
+        <Wallpaper />
         <SystemNav onSearchOpen={() => setSearchOpen(true)} />
         <main className="os-desktop">
-          <div className="os-desktop-main">
+          <div className="os-desktop-layout">
             <AppGrid />
+            <DailyTransmission />
           </div>
         </main>
         <DesktopPortrait />
         <WindowManager />
+        <Dock />
         <MusicPlayer />
         <Companion />
+        <BookingPing />
+        <CallTab />
         <CommandPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
       </div>
     </OSProvider>

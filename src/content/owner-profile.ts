@@ -34,7 +34,7 @@ export const ownerProfile = {
     primaryUrl: "#projects",
     secondaryLabel: "Email Aadesh",
     secondaryUrl: "mailto:aadesh.panwar@admeasy.in",
-    bookingUrl: "",
+    bookingUrl: process.env.NEXT_PUBLIC_CALENDAR_EMBED_URL || process.env.NEXT_PUBLIC_BOOKING_URL || "",
     whatsappUrl: "",
     email: "aadesh.panwar@admeasy.in",
     linkedin: "https://www.linkedin.com/in/aadesh-panwar/",
@@ -410,6 +410,14 @@ export const learnVideos = [
   { id: "diversified", title: "Entrepreneurship Journey Interview", channel: "DIVERSIFIED GAME", url: "https://www.linkedin.com/in/aadesh-panwar/", type: "Podcast" },
   { id: "foundervoice", title: "The Story of the Admeasy Founding Team", channel: "Foundervoice India", url: "https://www.linkedin.com/in/aadesh-panwar/", type: "Video" },
   { id: "h9", title: "Class 12 to Admeasy — Feature Article", channel: "H9 BrandX Studio", url: "https://featurewithhu9.in/", type: "Article" },
+];
+
+export const dailyMotivation = [
+  "BUILD THE THING YOU KEEP WISHING EXISTED.",
+  "NEVER DREAM SMALL — THEN BUILD THE SYSTEM THAT MAKES IT INEVITABLE.",
+  "OPERATIONAL CAPACITY BEATS HEADCOUNT WHEN AGENTS REMEMBER AND EXECUTE.",
+  "PROOF BEATS PITCH DECKS. SHIP, MEASURE, DISCLOSE.",
+  "A FOUNDER'S JOB IS LEVERAGE, NOT HEROICS.",
 ];
 
 export const musicTracks = [

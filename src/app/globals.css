@@ -1,95 +1,30 @@
 @import "tailwindcss";
 
-/* ═══ RETRO OS THEME — Win95 / early Linux pixel desktop ═══ */
+/* ═══ AADESH OS — Reference-matched retro desktop ═══ */
 
-:root,
-[data-theme="day"] {
-  --bg-wallpaper: #c4a882;
-  --bg-sky: #f4a96a;
-  --bg-sunset: #e87850;
-  --bg-hill: #c87848;
-  --bg-panel: #d4d0c8;
-  --bg-panel-solid: #c0c0c0;
-  --text-primary: #000000;
-  --text-secondary: #202020;
-  --text-muted: #404040;
-  --accent: #000080;
-  --accent-warm: #800000;
-  --border: #000000;
-  --nav-bg: #c0c0c0;
-  --dock-bg: #c0c0c0;
-  --window-chrome: #000080;
-  --window-chrome-text: #ffffff;
-  --window-body: #c0c0c0;
-  --btn-face: #c0c0c0;
+:root {
+  --maroon: #6b2038;
+  --maroon-dark: #4a1528;
+  --cream: #f5f0e8;
+  --cream-dark: #e8e0d4;
+  --lime: #b8e85a;
+  --lime-dark: #8ab830;
+  --yellow-cal: #f5d878;
+  --border: #1a1a1a;
+  --text: #1a1a1a;
+  --text-muted: #5a5048;
+  --nav-bg: #f5f0e8;
+  --window-body: #f5f0e8;
+  --btn-face: #e8e0d4;
   --btn-highlight: #ffffff;
-  --btn-shadow: #808080;
-  --btn-dark: #000000;
-  --desktop-icon-bg: #d4d0c8;
-  --pixel-scale: 1;
+  --btn-shadow: #888888;
+  --pixel-font: var(--font-vt323);
+  --serif-font: var(--font-playfair);
 }
 
-[data-theme="night"] {
-  --bg-wallpaper: #1a1040;
-  --bg-sky: #2d1b69;
-  --bg-sunset: #4a2c7a;
-  --bg-hill: #1f1535;
-  --bg-panel: #2d2d4a;
-  --bg-panel-solid: #1e1e3a;
-  --text-primary: #f0e6d3;
-  --text-secondary: #d4c4a8;
-  --text-muted: #a89880;
-  --accent: #6b8cff;
-  --accent-warm: #ff6b6b;
-  --border: #f0e6d3;
-  --nav-bg: #2d2d4a;
-  --dock-bg: #2d2d4a;
-  --window-chrome: #4a3080;
-  --window-chrome-text: #f0e6d3;
-  --window-body: #1e1e3a;
-  --btn-face: #3d3d5c;
-  --btn-highlight: #5a5a7a;
-  --btn-shadow: #1a1a2e;
-  --btn-dark: #f0e6d3;
-  --desktop-icon-bg: #2d2d4a;
-}
+* { box-sizing: border-box; }
 
-[data-theme="dark"] {
-  --bg-wallpaper: #0a0a0a;
-  --bg-sky: #111111;
-  --bg-sunset: #1a1a1a;
-  --bg-hill: #0d0d0d;
-  --bg-panel: #1a1a1a;
-  --bg-panel-solid: #0d0d0d;
-  --text-primary: #00ff00;
-  --text-secondary: #88cc88;
-  --text-muted: #448844;
-  --accent: #00ff00;
-  --accent-warm: #ff4444;
-  --border: #00ff00;
-  --nav-bg: #0a0a0a;
-  --dock-bg: #0a0a0a;
-  --window-chrome: #003300;
-  --window-chrome-text: #00ff00;
-  --window-body: #0a0a0a;
-  --btn-face: #1a1a1a;
-  --btn-highlight: #333333;
-  --btn-shadow: #000000;
-  --btn-dark: #00ff00;
-  --desktop-icon-bg: #111111;
-}
-
-@theme inline {
-  --font-pixel: var(--font-press-start);
-  --font-ui: var(--font-vt323);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
+html, body {
   height: 100%;
   margin: 0;
   overflow: hidden;
@@ -98,49 +33,34 @@ body {
 }
 
 body {
-  font-family: var(--font-vt323), "Courier New", monospace;
+  font-family: var(--pixel-font), "Courier New", monospace;
   font-size: 18px;
-  color: var(--text-primary);
-  background: var(--bg-wallpaper);
+  color: var(--text);
 }
 
-/* ═══ PIXEL WALLPAPER ═══ */
+/* ═══ WALLPAPER ═══ */
 .os-wallpaper {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: var(--bg-wallpaper);
-  background-image:
-    /* pixel clouds */
-    linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-sunset) 45%, var(--bg-hill) 70%, var(--bg-wallpaper) 100%);
+  overflow: hidden;
 }
 
-.os-wallpaper::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    /* blocky hills */
-    linear-gradient(165deg, transparent 55%, var(--bg-hill) 55%, var(--bg-hill) 58%, transparent 58%),
-    linear-gradient(155deg, transparent 60%, #b86838 60%, #b86838 65%, transparent 65%),
-    /* pixel sun */
-    radial-gradient(circle at 75% 25%, #ffe8a0 0%, #ffe8a0 8%, transparent 8%),
-    radial-gradient(circle at 75% 25%, #ffd060 0%, #ffd060 5%, transparent 5%);
-  opacity: 0.9;
-  image-rendering: pixelated;
+.os-wallpaper img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
-/* scanline overlay for CRT feel */
-.os-wallpaper::after {
-  content: "";
+.os-wallpaper-scanlines {
   position: absolute;
   inset: 0;
   background: repeating-linear-gradient(
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
   );
   pointer-events: none;
 }
@@ -159,155 +79,280 @@ body {
   position: relative;
   flex: 1;
   z-index: 1;
-  padding-top: 28px;
-  padding-bottom: 56px;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr auto;
-}
-
-.os-desktop-main {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: 1fr;
-  min-height: 0;
+  padding-top: 32px;
+  padding-bottom: 100px;
   overflow: hidden;
 }
 
-/* ═══ RETRO PANEL / BUTTON ═══ */
-.retro-panel {
-  background: var(--bg-panel);
-  border: 2px solid var(--border);
-  box-shadow:
-    inset -1px -1px 0 var(--btn-shadow),
-    inset 1px 1px 0 var(--btn-highlight);
+.os-desktop-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  height: 100%;
+  padding: 8px 16px;
+  align-items: start;
 }
 
-.retro-btn {
-  background: var(--btn-face);
-  border: 2px solid var(--border);
-  box-shadow:
-    inset -2px -2px 0 var(--btn-shadow),
-    inset 2px 2px 0 var(--btn-highlight);
-  font-family: var(--font-vt323), monospace;
+/* ═══ TASKBAR ═══ */
+.os-taskbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5500;
+  height: 32px;
+  display: flex;
+  align-items: stretch;
+  background: var(--nav-bg);
+  border-bottom: 2px solid var(--border);
+  font-family: var(--pixel-font);
   font-size: 16px;
-  padding: 4px 12px;
+}
+
+.taskbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border-right: 2px solid var(--border);
+  font-family: var(--font-press-start);
+  font-size: 7px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.taskbar-menu-btn {
+  background: transparent;
+  border: none;
+  border-right: 2px solid var(--border);
+  padding: 0 12px;
+  font-family: var(--pixel-font);
+  font-size: 15px;
   cursor: pointer;
-  color: var(--text-primary);
-  min-height: 28px;
+  color: var(--text);
+  letter-spacing: 0.08em;
 }
 
-.retro-btn:active {
-  box-shadow:
-    inset 2px 2px 0 var(--btn-shadow),
-    inset -2px -2px 0 var(--btn-highlight);
+.taskbar-menu-btn:hover {
+  background: var(--cream-dark);
 }
 
-.retro-btn-primary {
-  background: var(--accent-warm);
+.taskbar-status {
+  margin-left: auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.taskbar-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border-left: 2px solid var(--border);
+  font-size: 14px;
+}
+
+.taskbar-pill.building {
+  background: #1a1a1a;
   color: #fff;
   font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.taskbar-pill.dark-btn {
+  background: var(--maroon);
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+}
+
+.taskbar-pill.cal-btn {
+  background: var(--yellow-cal);
+  cursor: pointer;
+  border: none;
+  font-family: var(--pixel-font);
+  font-weight: bold;
+  font-size: 14px;
+  border-left: 2px solid var(--border);
 }
 
 /* ═══ DESKTOP ICON GRID ═══ */
 .desktop-icon-grid {
   display: grid;
-  grid-template-columns: repeat(4, 96px);
+  grid-template-columns: repeat(5, 108px);
   grid-auto-rows: min-content;
-  gap: 8px 4px;
-  padding: 12px 16px;
-  align-content: start;
+  gap: 4px 2px;
   overflow-y: auto;
-  max-height: 100%;
+  max-height: calc(100dvh - 140px);
+  padding: 4px;
+  align-content: start;
 }
 
 .desktop-icon-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  width: 96px;
-  padding: 6px 4px;
+  gap: 2px;
+  width: 108px;
+  padding: 4px 2px 8px;
   border: 2px solid transparent;
   background: transparent;
   cursor: pointer;
   text-align: center;
-  color: var(--text-primary);
+  color: var(--text);
 }
 
 .desktop-icon-btn:hover,
-.desktop-icon-btn:focus-visible {
-  background: rgba(0, 0, 128, 0.25);
-  border-color: rgba(0, 0, 128, 0.5);
-  outline: none;
-}
-
-.desktop-icon-btn.is-open .icon-box {
-  outline: 2px dotted var(--border);
-}
-
-.icon-box {
-  width: 48px;
-  height: 48px;
-  background: var(--desktop-icon-bg);
-  border: 2px solid var(--border);
-  box-shadow:
-    inset -1px -1px 0 var(--btn-shadow),
-    inset 1px 1px 0 var(--btn-highlight);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  image-rendering: pixelated;
-}
-
-.icon-label {
-  font-family: var(--font-vt323), monospace;
-  font-size: 14px;
-  line-height: 1.15;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  word-break: break-word;
-  max-width: 92px;
-  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.icon-sublabel {
-  font-family: var(--font-vt323), monospace;
-  font-size: 11px;
-  line-height: 1.2;
-  color: var(--text-muted);
-  max-width: 92px;
+.desktop-icon-btn.is-open {
+  background: rgba(107, 32, 56, 0.15);
+  border-color: rgba(107, 32, 56, 0.4);
 }
 
 .icon-badge {
-  font-family: var(--font-press-start), monospace;
-  font-size: 6px;
-  color: #006400;
-  text-transform: uppercase;
+  font-family: var(--font-press-start);
+  font-size: 5px;
+  color: #2d6a2d;
   letter-spacing: 0;
+  margin-bottom: 2px;
 }
 
-/* ═══ WINDOWS ═══ */
+.icon-box {
+  width: 52px;
+  height: 52px;
+  background: var(--cream);
+  border: 2px solid var(--border);
+  box-shadow: 3px 3px 0 var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.icon-label {
+  font-family: var(--pixel-font);
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  max-width: 104px;
+  background: var(--maroon);
+  color: #fff;
+  padding: 2px 4px;
+  margin-top: 4px;
+}
+
+.icon-sublabel {
+  font-family: var(--pixel-font);
+  font-size: 11px;
+  line-height: 1.15;
+  color: var(--text);
+  max-width: 104px;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ═══ DAILY TRANSMISSION ═══ */
+.daily-transmission {
+  position: relative;
+  width: min(300px, 40vw);
+  flex-shrink: 0;
+  margin-top: 8px;
+  margin-right: 8px;
+  z-index: 100;
+}
+
+.daily-transmission-body {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-top: none;
+  padding: 16px;
+}
+
+.daily-date {
+  font-family: var(--pixel-font);
+  font-size: 13px;
+  color: var(--maroon);
+  letter-spacing: 0.15em;
+  margin: 0 0 8px;
+}
+
+.daily-quote {
+  font-family: var(--serif-font), Georgia, serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+
+.daily-meta {
+  font-family: var(--pixel-font);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+  letter-spacing: 0.05em;
+}
+
+/* ═══ RETRO WINDOW CHROME ═══ */
+.retro-window {
+  border: 2px solid var(--border);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+.retro-window-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  font-family: var(--pixel-font);
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  border-bottom: 2px solid var(--border);
+}
+
+.retro-window-title.maroon {
+  background: var(--maroon);
+  color: #fff;
+}
+
+.retro-window-title.compact {
+  padding: 2px 6px;
+  font-size: 11px;
+}
+
+.retro-window-close {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text);
+  padding: 0;
+}
+
+/* ═══ OS WINDOWS ═══ */
 .os-window {
   position: fixed;
   display: flex;
   flex-direction: column;
   background: var(--window-body);
   border: 2px solid var(--border);
-  box-shadow:
-    inset -1px -1px 0 var(--btn-shadow),
-    inset 1px 1px 0 var(--btn-highlight),
-    4px 4px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.4);
   overflow: hidden;
-  min-width: min(92vw, 320px);
-  min-height: 180px;
-  max-height: calc(100dvh - 90px);
+  min-width: min(92vw, 340px);
+  min-height: 200px;
+  max-height: calc(100dvh - 120px);
 }
 
 .os-window.maximized {
-  inset: 30px 8px 60px 8px !important;
+  inset: 36px 12px 110px 12px !important;
   width: auto !important;
   height: auto !important;
   max-height: none;
@@ -316,178 +361,403 @@ body {
 .os-window-titlebar {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 2px 4px;
-  background: linear-gradient(90deg, var(--window-chrome), #1084d0);
-  color: var(--window-chrome-text);
+  gap: 8px;
+  padding: 3px 6px;
+  background: linear-gradient(90deg, #9b8ec4, #b8a8d8);
+  border-bottom: 2px solid var(--border);
   cursor: grab;
   user-select: none;
-  touch-action: none;
-  min-height: 22px;
-  border-bottom: 2px solid var(--border);
+  min-height: 26px;
 }
 
-.os-window-titlebar:active {
-  cursor: grabbing;
-}
+.os-window-titlebar:active { cursor: grabbing; }
 
 .os-window-controls {
   display: flex;
-  gap: 2px;
+  gap: 3px;
   flex-shrink: 0;
 }
 
 .os-window-btn {
-  width: 16px;
+  width: 14px;
   height: 14px;
   border: 2px solid var(--border);
-  background: var(--btn-face);
-  box-shadow:
-    inset -1px -1px 0 var(--btn-shadow),
-    inset 1px 1px 0 var(--btn-highlight);
   cursor: pointer;
-  font-size: 10px;
-  line-height: 1;
   padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-primary);
 }
 
-.os-window-btn.close::after {
-  content: "×";
-  font-weight: bold;
-}
-
-.os-window-btn.max::after {
-  content: "□";
-  font-size: 8px;
-}
+.os-window-btn.close { background: #e85d5d; }
+.os-window-btn.max { background: #f5d878; }
+.os-window-btn.min { background: #b8e85a; }
 
 .os-window-body {
   flex: 1;
   overflow: auto;
+  padding: 16px;
+  font-size: 17px;
+  line-height: 1.45;
+  background: var(--cream);
+}
+
+.window-headline {
+  font-family: var(--serif-font), Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+.window-headline em {
+  color: var(--maroon);
+  font-style: italic;
+}
+
+.window-kicker {
+  font-family: var(--pixel-font);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 3px solid var(--lime);
+  display: inline-block;
+  padding-bottom: 2px;
+  margin-bottom: 12px;
+}
+
+/* ═══ BUTTONS ═══ */
+.retro-btn {
+  background: var(--btn-face);
+  border: 2px solid var(--border);
+  box-shadow: inset -2px -2px 0 var(--btn-shadow), inset 2px 2px 0 var(--btn-highlight);
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  padding: 6px 14px;
+  cursor: pointer;
+  color: var(--text);
+  letter-spacing: 0.05em;
+}
+
+.retro-btn:active {
+  box-shadow: inset 2px 2px 0 var(--btn-shadow), inset -2px -2px 0 var(--btn-highlight);
+}
+
+.retro-btn-green {
+  background: var(--lime);
+  border: 2px solid var(--border);
+  box-shadow: 3px 3px 0 var(--border);
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  font-weight: bold;
   padding: 8px 12px;
-  font-size: 18px;
-  line-height: 1.4;
-  background: var(--window-body);
+  cursor: pointer;
+  color: var(--text);
+  letter-spacing: 0.06em;
+  width: 100%;
 }
 
-/* ═══ TASKBAR / NAV ═══ */
-.os-taskbar {
+.retro-btn-green:active {
+  box-shadow: 1px 1px 0 var(--border);
+  transform: translate(2px, 2px);
+}
+
+.retro-btn-primary {
+  background: var(--maroon);
+  color: #fff;
+}
+
+.retro-panel {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  box-shadow: inset -1px -1px 0 var(--btn-shadow), inset 1px 1px 0 var(--btn-highlight);
+}
+
+/* ═══ DOCK (Mac-style) ═══ */
+.os-dock {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 5500;
-  height: 28px;
-  display: flex;
-  align-items: stretch;
-  background: var(--nav-bg);
-  border-bottom: 2px solid var(--border);
-  box-shadow: inset 0 -1px 0 var(--btn-shadow);
-  font-family: var(--font-vt323), monospace;
-  font-size: 16px;
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* ═══ MUSIC PLAYER ═══ */
+.os-dock-inner {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 6px 10px;
+  background: rgba(245, 240, 232, 0.92);
+  border: 2px solid var(--border);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.os-dock-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--cream);
+  border: 2px solid var(--border);
+  box-shadow: 2px 2px 0 var(--border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  flex-shrink: 0;
+  transition: transform 0.1s;
+}
+
+.os-dock-icon:hover {
+  transform: translateY(-4px) scale(1.08);
+}
+
+.os-dock-icon.is-open::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  width: 4px;
+  height: 4px;
+  background: var(--maroon);
+  border-radius: 50%;
+}
+
+.os-dock-sep {
+  width: 2px;
+  height: 32px;
+  background: var(--border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ═══ MUSIC BAR ═══ */
 .os-music-bar {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
   z-index: 5600;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px;
-  background: var(--dock-bg);
-  border: 2px solid var(--border);
-  border-bottom: none;
-  box-shadow:
-    inset -1px -1px 0 var(--btn-shadow),
-    inset 1px 1px 0 var(--btn-highlight);
-  min-width: min(480px, 96vw);
-  max-width: 96vw;
+  padding: 4px 16px;
+  background: var(--nav-bg);
+  border-top: 2px solid var(--border);
+  min-height: 48px;
 }
 
-/* ═══ PORTRAIT SPRITE ═══ */
+/* ═══ PORTRAIT ═══ */
 .desktop-portrait {
   position: fixed;
-  bottom: 52px;
-  right: 16px;
+  bottom: 56px;
+  right: 12px;
   z-index: 200;
   pointer-events: none;
-  image-rendering: pixelated;
+  line-height: 0;
 }
 
-/* ═══ COMPANION ═══ */
+/* ═══ COMPANION + BOOKING ═══ */
 .companion-zone {
   position: fixed;
-  bottom: 52px;
+  bottom: 56px;
   left: 12px;
   z-index: 4500;
+}
+
+.booking-ping {
+  position: fixed;
+  bottom: 130px;
+  left: 12px;
+  z-index: 4510;
+  width: min(280px, 80vw);
+}
+
+.booking-ping-body {
+  background: var(--cream);
+  border: 2px solid var(--border);
+  border-top: none;
+  padding: 10px;
+  font-size: 13px;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.demo-badge {
+  font-size: 9px;
+  background: var(--maroon);
+  color: #fff;
+  padding: 1px 4px;
+  margin-right: 4px;
+}
+
+/* ═══ CALL TAB FOLD ═══ */
+.call-tab-fold {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 4000;
+  width: 160px;
+  height: 120px;
+  background: var(--maroon);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
   display: flex;
-  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0 12px 16px 0;
+  text-decoration: none;
+  color: #fff;
+}
+
+.call-tab-text {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  line-height: 1.35;
+  text-align: right;
+  letter-spacing: 0.04em;
+}
+
+.call-tab-text strong {
+  font-size: 11px;
+}
+
+/* ═══ SEARCH PALETTE ═══ */
+.search-palette {
+  position: fixed;
+  inset: 0;
+  z-index: 5400;
+  display: flex;
   align-items: flex-start;
-  gap: 4px;
+  justify-content: center;
+  padding-top: 80px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.search-window {
+  width: min(560px, 94vw);
+  border: 2px solid var(--border);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+}
+
+.search-title {
+  background: #b8a8d8;
+  border-bottom: 2px solid var(--border);
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--pixel-font);
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+.search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--cream);
+  border-bottom: 2px solid var(--border);
+}
+
+.search-input-row input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--pixel-font);
+  font-size: 16px;
+  outline: none;
+  color: var(--text);
+}
+
+.search-results {
+  background: var(--cream);
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.search-result-btn {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-bottom: 1px solid var(--cream-dark);
+  background: transparent;
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+
+.search-result-btn.active,
+.search-result-btn:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.search-result-type {
+  font-size: 11px;
+  opacity: 0.7;
 }
 
 /* ═══ MOBILE ═══ */
-@media (max-width: 640px) {
-  .desktop-icon-grid {
-    grid-template-columns: repeat(2, 88px);
-    gap: 6px;
+@media (max-width: 900px) {
+  .os-desktop-layout {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
   }
 
-  .desktop-icon-btn {
-    width: 88px;
+  .daily-transmission {
+    width: 100%;
+    margin: 0;
+    order: -1;
   }
+
+  .desktop-icon-grid {
+    grid-template-columns: repeat(3, 96px);
+  }
+
+  .desktop-icon-btn { width: 96px; }
 
   .desktop-portrait {
-    width: 80px;
+    width: 100px;
+    right: 4px;
+    bottom: 108px;
+  }
+
+  .call-tab-fold {
+    width: 100%;
     height: auto;
-    right: 8px;
-    bottom: 56px;
-    opacity: 0.85;
+    clip-path: none;
+    position: relative;
+    padding: 12px;
+    margin: 8px 16px;
+    border-radius: 0;
   }
 
   .os-desktop {
     overflow-y: auto;
-    padding-bottom: 64px;
+    padding-bottom: 120px;
   }
+}
 
-  .os-window {
-    inset: 30px 4px 64px 4px !important;
-    width: auto !important;
-    height: auto !important;
-    max-height: none;
+@media (max-width: 480px) {
+  .desktop-icon-grid {
+    grid-template-columns: repeat(2, 88px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
 :focus-visible {
-  outline: 2px dotted var(--border);
+  outline: 2px dotted var(--maroon);
   outline-offset: 2px;
 }
 
 .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
