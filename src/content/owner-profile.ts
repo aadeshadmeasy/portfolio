@@ -15,8 +15,8 @@ export const ownerProfile = {
     intro: "— Aadesh Panwar",
     positioning:
       "Building Admeasy Ai — an agentic operating system that gives small teams the output of a hundred-person company.",
-    portrait: "/assets/avatar-hero.png",
-    sprite: "/assets/avatar-hero.png",
+    portrait: "/assets/sprite-aadesh.png",
+    sprite: "/assets/sprite-aadesh.png",
   },
   imageGeneration: {
     mode: "codex-native" as const,
@@ -30,14 +30,15 @@ export const ownerProfile = {
     finalApprovalBy: "Aadesh Panwar",
   },
   conversion: {
-    primaryLabel: "Enter the Portfolio",
+    primaryLabel: "Open Projects",
     primaryUrl: "#projects",
-    secondaryLabel: "Book a Strategy Call",
-    secondaryUrl: "https://cal.com",
-    bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL || "https://cal.com",
-    whatsappUrl: process.env.NEXT_PUBLIC_WHATSAPP_URL || "https://wa.me/919876543210",
-    email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "team@admeasy.in",
-    emergencyLabel: "URGENT: Reach Aadesh on WhatsApp",
+    secondaryLabel: "Email Aadesh",
+    secondaryUrl: "mailto:aadesh.panwar@admeasy.in",
+    bookingUrl: "",
+    whatsappUrl: "",
+    email: "aadesh.panwar@admeasy.in",
+    linkedin: "https://www.linkedin.com/in/aadesh-panwar/",
+    emergencyLabel: "Email Aadesh for urgent business implementation",
   },
   company: {
     brand: "Admeasy Ai",
@@ -264,65 +265,81 @@ export const testimonials: Testimonial[] = [
 
 export const journey: JourneyMilestone[] = [
   {
-    year: "2019",
-    title: "Founded Admeasy.in",
-    story: "Started in college admissions — learned distribution, trust, and operational grind firsthand.",
+    year: "2023",
+    title: "Class 12 — 96% CBSE Commerce",
+    story: "Scored 96% in 12th CBSE from Indore. Opted for rechecking on 94.6%. Sports & commerce foundations.",
+    skill: "Discipline & academics",
+  },
+  {
+    year: "2025",
+    title: "Mesa School — converted final offer",
+    story: "Completed all steps in Mesa School of Business undergrad startup program and received final offer.",
+    skill: "Startup building",
+  },
+  {
+    year: "2025",
+    title: "SRCC — Asia's No. 1 Commerce College",
+    story: "B.Com (Hons) at Shri Ram College of Commerce, University of Delhi. Proud SRCC admit.",
+    skill: "Business & law foundations",
+  },
+  {
+    year: "2025",
+    title: "Founded Admeasy™",
+    story: "Co-Founder & CEO — LinkedIn for school students. Built team, distribution, and product in Indore/Delhi.",
     skill: "Consumer product & growth",
     projectId: "admeasy-in",
   },
   {
-    year: "2023",
-    title: "Operator ceiling",
-    story:
-      "Realized hiring alone cannot fix founder exhaustion — the gap is operational capacity, not talent.",
-    skill: "Systems thinking",
-  },
-  {
-    year: "2024",
-    title: "Pivot to Admeasy Ai",
-    story:
-      "Registered Admeasy Admission Solutions Pvt Ltd and began building an agentic AI workforce OS.",
-    skill: "Agentic architecture",
-    projectId: "admeasy-ai",
-  },
-  {
-    year: "2025",
-    title: "Voice + Product agents ship",
-    story: "Calling engine, coding agent, and MCP hub moved from slides to production infrastructure.",
-    skill: "Execution at depth",
-    projectId: "voice-calling-engine",
+    year: "2026",
+    title: "Indian Startup School cohort",
+    story: "Full-time startup cohort member in Gurugram. Time well spent.",
+    skill: "Founder network",
   },
   {
     year: "2026",
-    title: "Founding cohort & public proof",
-    story: "Opened beta for lean teams; this portfolio OS documents the builder behind the product.",
-    skill: "Proof-driven storytelling",
-    projectId: "portfolio-os",
+    title: "Stealth AI Startup · DPIIT recognised",
+    story: "Co-Founder of deep-tech AI startup recognised & approved by Indian Govt. (DPIIT).",
+    skill: "Agentic AI architecture",
+    projectId: "admeasy-ai",
+  },
+  {
+    year: "2026",
+    title: "Srushti Startup Cohort 26'",
+    story: "Part-time cohort member at Srushti Degree College, Bengaluru. Got initial funds.",
+    skill: "Fundraising",
   },
 ];
 
 export const socials: SocialLink[] = [
   {
+    network: "LinkedIn",
+    handle: "aadesh-panwar",
+    metric: "Primary profile",
+    purpose: "Experience, education, honors & press",
+    url: "https://www.linkedin.com/in/aadesh-panwar/",
+    status: "active",
+  },
+  {
     network: "GitHub",
     handle: "@aadeshadmeasy",
-    metric: "Open source & product builds",
-    purpose: "Code, experiments, and portfolio",
+    metric: "Code & experiments",
+    purpose: "Open source & product builds",
     url: "https://github.com/aadeshadmeasy",
     status: "active",
   },
   {
-    network: "Product",
+    network: "Admeasy Ai",
     handle: "enterprise.admeasy.in",
-    metric: "Admeasy Ai workspace",
-    purpose: "Agentic AI platform",
+    metric: "Agentic AI platform",
+    purpose: "Product workspace",
     url: "https://enterprise.admeasy.in",
     status: "active",
   },
   {
-    network: "Previous startup",
+    network: "Admeasy.in",
     handle: "admeasy.in",
-    metric: "Admissions platform",
-    purpose: "Founder history & brand continuity",
+    metric: "Previous startup",
+    purpose: "Founder history",
     url: "https://admeasy.in",
     status: "active",
   },
@@ -347,46 +364,61 @@ export const articles: Article[] = [
   },
 ];
 
-export const founderTxt = `WHO I AM
-Aadesh Panwar — founder and CEO of Admeasy Ai (Admeasy Admission Solutions Pvt Ltd).
-Previously built and led Admeasy.in in college admissions.
+export const founderTxt = `AADESH PANWAR — FOUNDER.TXT
+═══════════════════════════════════════
+
+WHO I AM
+Stealth AI founder · Ex Co-Founder & CEO at Admeasy™
+SRCC · ISS · MESA converted
+As seen in multiple podcasts and articles.
 
 WHAT I BUILD
-Agentic operating systems: marketing, CRM, HR, and product departments that execute — not just suggest.
+Agentic AI operating systems — marketing, CRM, HR, and product
+departments that execute, not just suggest.
 
-WHY I CARE
-A five-person startup should ship like a hundred-person company. The gap is not talent. It is operational capacity.
+EDUCATION
+· B.Com (Hons) — Shri Ram College of Commerce (SRCC), 2025–2028
+· Mesa School of Business — startup program, converted final offer
+· 12th CBSE Commerce — 96%, Indore
 
-HOW I WORK
-Find leverage → lock the system → build the sharp edge → integrate the workflow → prove and hand off.
+EXPERIENCE
+· Co-Founder — Stealth AI Startup (DPIIT recognised), 2026–present
+· Co-Founder & CEO — Admeasy™ (LinkedIn for school students), 2025–2026
 
-EXPLORING
-MCP-native tool ecosystems, voice-first CRM, and compounding workspace memory for lean teams.
-
-WHO I WANT TO WORK WITH
-Founders, operators, and teams ready to replace manual loops with accountable AI systems.
-
-NON-NEGOTIABLES
-Honest proof. No fake metrics. No vanity dashboards. Systems that actually run.
+NEVER DREAM SMALL.
 
 CONTACT
-team@admeasy.in · Book via the Calendar app`;
+aadesh.panwar@admeasy.in
+linkedin.com/in/aadesh-panwar
 
-export const dailyMotivation = [
-  "Never dream small — then build the system that makes the dream inevitable.",
-  "Operational capacity beats headcount when agents remember and execute.",
-  "A founder's job is leverage, not heroics.",
-  "Proof beats pitch decks. Ship, measure, disclose.",
-  "The sharp edge is the integration — not the slide.",
+[ DEMO FILE — UPDATE IN FUTURE RELEASE ]`;
+
+export const achievements = [
+  { id: "nit-podcast", title: "Featured in NIT Jaipur Podcast", issuer: "E-Cell MNIT Jaipur", date: "Jan 2026", note: "Teenage Founder, Real Problems: The Admeasy Story" },
+  { id: "h9-article", title: "Featured on H9 (BrandX Studio)", issuer: "featurewithhu9.in", date: "Nov 2025", note: "How a Class 12 Student Turned Exam Frustration into Admeasy" },
+  { id: "diversified", title: "Featured in US Podcast", issuer: "DIVERSIFIED GAME", date: "Nov 2025", note: "Entrepreneurship journey interview" },
+  { id: "foundervoice", title: "Foundervoice India feature", issuer: "Foundervoice India", date: "Oct 2025", note: "Admeasy founding team honoured" },
+  { id: "cxowords", title: "CXOWords feature", issuer: "CXOWords", date: "Sep 2025", note: "LinkedIn Page feature" },
+  { id: "ey-cert", title: "EY Technology Risk Simulation", issuer: "EY × Forage", date: "Feb 2026", note: "Professional Skepticism, Risk Analysis" },
+  { id: "gs-cert", title: "Goldman Sachs Controllers Simulation", issuer: "Goldman Sachs × Forage", date: "Feb 2026", note: "Fund analysis, Financial Risk Management" },
+  { id: "srushti", title: "Srushti Startup Cohort 26'", issuer: "Srushti Degree College", date: "Feb 2026", note: "Got initial funds" },
+  { id: "iss", title: "Indian Startup School cohort", issuer: "ISS Gurugram", date: "Jan 2026", note: "Full-time startup cohort" },
+];
+
+export const learnVideos = [
+  { id: "nit", title: "Teenage Founder, Real Problems: The Admeasy Story", channel: "E-cell MNIT Jaipur Podcast", url: "https://www.linkedin.com/in/aadesh-panwar/", type: "Podcast" },
+  { id: "diversified", title: "Entrepreneurship Journey Interview", channel: "DIVERSIFIED GAME", url: "https://www.linkedin.com/in/aadesh-panwar/", type: "Podcast" },
+  { id: "foundervoice", title: "The Story of the Admeasy Founding Team", channel: "Foundervoice India", url: "https://www.linkedin.com/in/aadesh-panwar/", type: "Video" },
+  { id: "h9", title: "Class 12 to Admeasy — Feature Article", channel: "H9 BrandX Studio", url: "https://featurewithhu9.in/", type: "Article" },
 ];
 
 export const musicTracks = [
   {
-    id: "focus-1",
-    title: "Focus Loop",
-    artist: "Aadesh OS · Demo Track",
-    src: "",
-    license: "Placeholder — add licensed tracks before launch",
+    id: "chiptune-1",
+    title: "Retro Drive",
+    artist: "SoundHelix · Demo License",
+    src: "/music/chiptune-loop.mp3",
+    license: "SoundHelix demo track — replace with owned/licensed music before production",
   },
 ];
 

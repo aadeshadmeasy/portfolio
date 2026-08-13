@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import {
+  achievements,
   articles,
   clientCases,
   founderTxt,
   journey,
+  learnVideos,
   metrics,
   ownerProfile,
   projects,
   socials,
   systemsLoop,
-  testimonials,
 } from "@/content/owner-profile";
 import { statusLabel } from "@/lib/utils";
 import { ContactApp } from "@/components/apps/ContactApp";
@@ -30,6 +31,12 @@ export function AppContent({ appId }: { appId: string }) {
       return <ProofApp />;
     case "journey":
       return <JourneyApp />;
+    case "achievements":
+      return <AchievementsApp />;
+    case "learn":
+      return <LearnApp />;
+    case "emergency":
+      return <EmergencyApp />;
     case "socials":
       return <SocialsApp />;
     case "founder":
@@ -40,8 +47,6 @@ export function AppContent({ appId }: { appId: string }) {
       return <BrowserApp />;
     case "contact":
       return <ContactApp />;
-    case "calendar":
-      return <CalendarApp />;
     case "voice":
       return <VoiceApp />;
     default:
@@ -194,20 +199,15 @@ function SystemsApp() {
 function ProofApp() {
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold">Proof Vault</h2>
-      {testimonials.map((t) => (
-        <article key={t.id} className="rounded-lg border p-4" style={{ borderColor: "var(--border)" }}>
-          <p className="font-mono text-xs uppercase text-amber-600">Illustrative placeholder</p>
-          <h3 className="text-lg font-semibold">{t.title}</h3>
-          <p className="text-sm text-[var(--text-muted)]">{t.client} · {t.duration}</p>
-          <p className="mt-2 text-sm">{t.context}</p>
-          <a
-            href={t.externalUrl}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="mt-3 inline-block text-sm font-medium text-[var(--accent)]"
-          >
-            View on Admeasy Ai →
+      <h2 className="text-xl font-bold">PROOF.EXE</h2>
+      <p className="text-sm">Podcasts, press features &amp; public proof.</p>
+      {learnVideos.map((v) => (
+        <article key={v.id} className="retro-panel p-3">
+          <p className="text-xs uppercase text-[var(--accent-warm)]">{v.type} · DEMO</p>
+          <h3 className="font-bold">{v.title}</h3>
+          <p className="text-sm text-[var(--text-muted)]">{v.channel}</p>
+          <a href={v.url} target="_blank" rel="noreferrer noopener" className="retro-btn mt-2 inline-block text-sm">
+            OPEN LINK
           </a>
         </article>
       ))}
@@ -267,27 +267,66 @@ function FounderApp() {
   );
 }
 
-function CalendarApp() {
-  const bookingUrl = ownerProfile.conversion.bookingUrl;
+function AchievementsApp() {
+  return (
+    <div className="space-y-3">
+      <h2 className="text-xl font-bold">ACHIEVEMENTS.VAULT</h2>
+      <p className="text-sm text-[var(--text-muted)]">[ DEMO DATA — update in future release ]</p>
+      {achievements.map((a) => (
+        <article key={a.id} className="retro-panel p-3">
+          <p className="text-xs text-[var(--accent)]">{a.date}</p>
+          <h3 className="font-bold">{a.title}</h3>
+          <p className="text-sm">{a.issuer}</p>
+          <p className="text-sm text-[var(--text-muted)]">{a.note}</p>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function LearnApp() {
+  return (
+    <div className="space-y-3">
+      <h2 className="text-xl font-bold">LEARN.LIB</h2>
+      <p className="text-sm text-[var(--text-muted)]">Podcasts, articles &amp; knowledge library.</p>
+      {learnVideos.map((v) => (
+        <article key={v.id} className="retro-panel p-3">
+          <span className="retro-panel inline-block px-2 py-0.5 text-xs">{v.type}</span>
+          <h3 className="mt-1 font-bold">{v.title}</h3>
+          <p className="text-sm text-[var(--text-muted)]">{v.channel}</p>
+          <a href={v.url} target="_blank" rel="noreferrer noopener" className="retro-btn mt-2 inline-block text-sm">
+            WATCH / READ
+          </a>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function EmergencyApp() {
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold">Calendar</h2>
-      <p className="text-sm text-[var(--text-secondary)]">
-        Book a strategy call with {ownerProfile.identity.fullName}. Special dates and availability
-        shown when calendar integration is connected.
+      <h2 className="text-xl font-bold text-[var(--accent-warm)]">⚠ EMERGENCY.SYS</h2>
+      <p className="text-sm">
+        <strong>URGENT BUSINESS IMPLEMENTATION</strong> — not medical or public emergency services.
       </p>
-      <a
-        href={bookingUrl}
-        target="_blank"
-        rel="noreferrer noopener"
-        className="inline-flex min-h-11 items-center rounded-lg px-5 py-2 text-sm font-semibold text-white"
-        style={{ background: "var(--accent)" }}
-      >
-        Open booking page in new tab
-      </a>
-      <p className="text-xs text-[var(--text-muted)]">
-        Configure <code>NEXT_PUBLIC_BOOKING_URL</code> in your environment.
-      </p>
+      <div className="retro-panel border-4 border-[var(--accent-warm)] p-4">
+        <p className="font-bold">REACH AADESH NOW</p>
+        <p className="mt-2 text-sm">For time-sensitive founder or operator requests only.</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <a href={`mailto:${ownerProfile.conversion.email}`} className="retro-btn retro-btn-primary">
+            EMAIL
+          </a>
+          <a
+            href={ownerProfile.conversion.linkedin}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="retro-btn"
+          >
+            LINKEDIN
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

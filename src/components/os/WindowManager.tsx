@@ -110,10 +110,9 @@ function OSWindow({
           />
           <button type="button" className="os-window-btn min" aria-hidden tabIndex={-1} />
         </div>
-        <p id={`win-title-${win.id}`} className="flex-1 truncate text-sm font-semibold">
+        <p id={`win-title-${win.id}`} className="flex-1 truncate text-sm font-bold uppercase">
           {win.title}
         </p>
-        <p className="hidden font-mono text-xs text-[var(--text-muted)] sm:block">Ready</p>
       </div>
       <div className="os-window-body">
         <AppContent appId={win.appId} />
