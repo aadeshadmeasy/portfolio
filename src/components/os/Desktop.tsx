@@ -8,8 +8,7 @@ import { Wallpaper } from "@/components/os/Wallpaper";
 import { AppGrid } from "@/components/os/AppGrid";
 import { DailyTransmission } from "@/components/os/DailyTransmission";
 import { WindowManager } from "@/components/os/WindowManager";
-import { Dock } from "@/components/os/Dock";
-import { MusicPlayer } from "@/components/os/MusicPlayer";
+import { BottomChrome } from "@/components/os/BottomChrome";
 import { DesktopPortrait } from "@/components/os/DesktopPortrait";
 import { Companion } from "@/components/os/Companion";
 import { BookingPing } from "@/components/os/BookingPing";
@@ -49,8 +48,7 @@ export function Desktop() {
         </main>
         <DesktopPortrait />
         <WindowManager />
-        <Dock />
-        <MusicPlayer />
+        <BottomChrome />
         <Companion />
         <BookingPing />
         <CallTab />

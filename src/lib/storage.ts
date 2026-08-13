@@ -6,6 +6,12 @@ export const STORAGE_KEYS = {
   media: "personal-os-media-v1",
   boot: "personal-os-boot-v1",
   companion: "personal-os-companion-v1",
+  quickStickies: "personal-os-quick-stickies-v1",
+  bookingPingDismissed: "personal-os-booking-ping-v1",
+  bookingProfile: "personal-os-booking-profile-v1",
+  lastBooking: "personal-os-last-booking-v1",
+  iconLayout: "personal-os-icon-layout-v1",
+  bottomBarExpanded: "personal-os-bottom-bar-v1",
 } as const;
 
 export function readStorage<T>(key: string, fallback: T): T {

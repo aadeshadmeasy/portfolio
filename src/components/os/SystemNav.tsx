@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { ownerProfile } from "@/content/owner-profile";
 import { useOS } from "@/components/os/OSProvider";
 import type { ThemeMode } from "@/lib/types";
@@ -49,12 +48,14 @@ export function SystemNav({ onSearchOpen }: { onSearchOpen: () => void }) {
   return (
     <header className="os-taskbar" role="banner">
       <div className="taskbar-brand">
-        <Image
-          src="/assets/character-aadesh.png"
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/assets/character-aadesh-transparent.png"
           alt=""
           width={20}
           height={20}
-          style={{ imageRendering: "pixelated", objectFit: "cover", objectPosition: "top" }}
+          className="taskbar-avatar"
+          draggable={false}
         />
         <span>{ownerProfile.identity.osName.toUpperCase()}</span>
       </div>

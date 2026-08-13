@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ownerProfile } from "@/content/owner-profile";
 import { readStorage, STORAGE_KEYS, writeStorage } from "@/lib/storage";
 
 interface Note {
@@ -17,9 +18,32 @@ export function WhiteboardApp() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [draft, setDraft] = useState("");
   const [color, setColor] = useState(COLORS[0]);
+  const dragRef = useRef<{ id: string; offsetX: number; offsetY: number } | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+  const notesRef = useRef<Note[]>([]);
 
   useEffect(() => {
-    setNotes(readStorage<Note[]>(STORAGE_KEYS.whiteboard, []));
+    notesRef.current = notes;
+  }, [notes]);
+
+  useEffect(() => {
+    const saved = readStorage<Note[]>(STORAGE_KEYS.whiteboard, []);
+    const quick = readStorage<Array<{ id: string; text: string; createdAt: string }>>(
+      STORAGE_KEYS.quickStickies,
+      [],
+    );
+
+    const imported: Note[] = quick
+      .filter((q) => !saved.some((n) => n.id === q.id))
+      .map((q, i) => ({
+        id: q.id,
+        text: q.text,
+        color: COLORS[i % COLORS.length],
+        x: 24 + i * 16,
+        y: 24 + i * 16,
+      }));
+
+    setNotes([...saved, ...imported]);
   }, []);
 
   const persist = useCallback((next: Note[]) => {
@@ -34,8 +58,8 @@ export function WhiteboardApp() {
       id: crypto.randomUUID(),
       text,
       color,
-      x: 20 + notes.length * 12,
-      y: 20 + notes.length * 12,
+      x: 32 + (notes.length % 4) * 24,
+      y: 32 + (notes.length % 3) * 28,
     };
     persist([...notes, note]);
     setDraft("");
@@ -50,82 +74,109 @@ export function WhiteboardApp() {
   };
 
   const reset = () => {
-    if (confirm("Delete all sticky notes on this device?")) persist([]);
+    if (confirm("Delete all sticky notes on this device?")) {
+      persist([]);
+      writeStorage(STORAGE_KEYS.quickStickies, []);
+    }
+  };
+
+  const onPointerDown = (id: string, e: React.PointerEvent) => {
+    const board = boardRef.current;
+    if (!board) return;
+    const rect = board.getBoundingClientRect();
+    const note = notes.find((n) => n.id === id);
+    if (!note) return;
+    dragRef.current = {
+      id,
+      offsetX: e.clientX - rect.left - note.x,
+      offsetY: e.clientY - rect.top - note.y,
+    };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragRef.current || !boardRef.current) return;
+    const rect = boardRef.current.getBoundingClientRect();
+    const { id, offsetX, offsetY } = dragRef.current;
+    const x = Math.max(0, Math.min(e.clientX - rect.left - offsetX, rect.width - 160));
+    const y = Math.max(0, Math.min(e.clientY - rect.top - offsetY, rect.height - 120));
+    setNotes((prev) => prev.map((n) => (n.id === id ? { ...n, x, y } : n)));
+  };
+
+  const onPointerUp = () => {
+    if (dragRef.current) {
+      writeStorage(STORAGE_KEYS.whiteboard, notesRef.current);
+      dragRef.current = null;
+    }
   };
 
   return (
-    <div className="space-y-4">
-      <header>
-        <h2 className="text-xl font-bold">Whiteboard</h2>
+    <div className="whiteboard-app space-y-4">
+      <header className="whiteboard-header">
+        <p className="window-kicker">{ownerProfile.identity.osName} WHITEBOARD</p>
+        <h2 className="window-headline">
+          Leave a <em>sticky note.</em>
+        </h2>
         <p className="text-sm text-[var(--text-muted)]">
-          Notes are stored locally in your browser only — the owner does not receive them. Use
-          Contact for incoming messages.
+          Drag · write · persist locally. Notes stay on your device only.
         </p>
       </header>
 
-      <div className="flex flex-wrap gap-2">
-        {COLORS.map((c) => (
-          <button
-            key={c}
-            type="button"
-            onClick={() => setColor(c)}
-            className="h-8 w-8 rounded-full ring-2 ring-offset-2"
-            style={{
-              background: c,
-              outline: color === c ? "2px solid var(--accent)" : "none",
-            }}
-            aria-label={`Select color ${c}`}
-          />
-        ))}
-      </div>
-
-      <div className="flex flex-wrap gap-2">
+      <div className="whiteboard-toolbar">
+        <div className="whiteboard-colors">
+          {COLORS.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setColor(c)}
+              className={`whiteboard-color ${color === c ? "is-active" : ""}`}
+              style={{ background: c }}
+              aria-label={`Select color`}
+            />
+          ))}
+        </div>
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder="Quick thought…"
+          placeholder="What should Aadesh build, fix, or remember?"
           maxLength={280}
-          className="min-h-11 flex-1 rounded-lg border bg-transparent px-3"
-          style={{ borderColor: "var(--border)" }}
+          className="whiteboard-input"
+          onKeyDown={(e) => e.key === "Enter" && addNote()}
         />
-        <button
-          type="button"
-          onClick={addNote}
-          className="min-h-11 rounded-lg px-4 text-sm font-semibold text-white"
-          style={{ background: "var(--accent)" }}
-        >
-          Add Sticky
+        <button type="button" onClick={addNote} className="retro-btn-green !w-auto shrink-0">
+          + ADD STICKY
         </button>
-        <button
-          type="button"
-          onClick={reset}
-          className="min-h-11 rounded-lg border px-4 text-sm"
-          style={{ borderColor: "var(--border)" }}
-        >
-          Reset board
+        <button type="button" onClick={reset} className="retro-btn shrink-0">
+          RESET DESKTOP ICONS
         </button>
       </div>
 
-      <div className="relative min-h-[240px] rounded-lg border bg-black/[0.02]" style={{ borderColor: "var(--border)" }}>
+      <div
+        ref={boardRef}
+        className="whiteboard-canvas"
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
         {notes.map((n) => (
           <div
             key={n.id}
-            className="absolute w-44 rounded-md p-2 shadow-md"
+            className="whiteboard-note"
             style={{ left: n.x, top: n.y, background: n.color }}
+            onPointerDown={(e) => onPointerDown(n.id, e)}
           >
+            <div className="whiteboard-note-head">
+              <span>DRAG NOTE</span>
+              <button type="button" onClick={() => deleteNote(n.id)} aria-label="Delete">
+                ×
+              </button>
+            </div>
             <textarea
               value={n.text}
               onChange={(e) => updateNote(n.id, e.target.value)}
-              className="w-full resize-none bg-transparent text-sm text-stone-900"
+              className="whiteboard-note-body"
               rows={4}
             />
-            <button
-              type="button"
-              onClick={() => deleteNote(n.id)}
-              className="text-xs text-stone-700 underline"
-            >
-              Delete
-            </button>
           </div>
         ))}
       </div>

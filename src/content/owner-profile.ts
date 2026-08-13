@@ -34,7 +34,11 @@ export const ownerProfile = {
     primaryUrl: "#projects",
     secondaryLabel: "Email Aadesh",
     secondaryUrl: "mailto:aadesh.panwar@admeasy.in",
-    bookingUrl: process.env.NEXT_PUBLIC_CALENDAR_EMBED_URL || process.env.NEXT_PUBLIC_BOOKING_URL || "",
+    bookingUrl:
+      process.env.NEXT_PUBLIC_CALENDLY_URL ||
+      process.env.NEXT_PUBLIC_CALENDAR_EMBED_URL ||
+      process.env.NEXT_PUBLIC_BOOKING_URL ||
+      "",
     whatsappUrl: "",
     email: "aadesh.panwar@admeasy.in",
     linkedin: "https://www.linkedin.com/in/aadesh-panwar/",

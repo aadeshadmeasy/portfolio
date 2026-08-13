@@ -21,7 +21,7 @@ export function Dock() {
               type="button"
               onClick={() => openApp(app.id, app.name)}
               className={`os-dock-icon${isOpen ? " is-open" : ""}`}
-              title={app.name}
+              data-label={app.name}
               aria-label={app.name}
             >
               <PixelIcon name={app.icon} size={32} />
@@ -33,7 +33,7 @@ export function Dock() {
           type="button"
           onClick={() => openApp("browser", "Browser")}
           className="os-dock-icon"
-          title="AadeshNet"
+          data-label="AadeshNet"
           aria-label="AadeshNet browser"
         >
           <PixelIcon name="globe" size={32} />

@@ -20,6 +20,8 @@
   --btn-shadow: #888888;
   --pixel-font: var(--font-vt323);
   --serif-font: var(--font-playfair);
+  --scene-drift: 18s;
+  --scene-bob: 4s;
 }
 
 * { box-sizing: border-box; }
@@ -28,8 +30,6 @@ html, body {
   height: 100%;
   margin: 0;
   overflow: hidden;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }
 
 body {
@@ -38,31 +38,142 @@ body {
   color: var(--text);
 }
 
-/* ═══ WALLPAPER ═══ */
+/* ═══ WALLPAPER — full-res scenes + sprite motion ═══ */
 .os-wallpaper {
   position: fixed;
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  background: #0a0612;
 }
 
-.os-wallpaper img {
+.wallpaper-scene {
+  position: absolute;
+  inset: 0;
+  animation: scene-fade-in 1s ease;
+}
+
+@keyframes scene-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Clipped viewport — scene pans inside without scaling down quality */
+.wp-scene-track {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.wp-scene-base {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 112%;
+  height: 112%;
+  max-width: none;
   object-fit: cover;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.wp-scene-track--day .wp-scene-inner {
+  animation: scene-drift-day var(--scene-drift) linear infinite alternate;
+}
+
+.wp-scene-track--night .wp-scene-inner {
+  animation: scene-drift-night calc(var(--scene-drift) * 1.2) linear infinite alternate;
+}
+
+.wp-scene-track--dark .wp-scene-inner {
+  animation: scene-drift-dark calc(var(--scene-drift) * 0.95) ease-in-out infinite alternate;
+}
+
+.wp-scene-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 112%;
+  height: 112%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.wp-scene-inner .wp-scene-base {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  top: 0;
+  left: 0;
+  transform: none;
+  animation: none;
+}
+
+.wp-mug-steam-anchor {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wp-sprite-steam {
+  position: absolute;
+  left: -20px;
+  bottom: 0;
+  width: 40px;
+  height: auto;
+  opacity: 0.55;
+  animation: steam-rise 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.wp-sprite-steam-2 {
+  left: -12px;
+  bottom: 4px;
+  opacity: 0.35;
+  animation-delay: -2s;
+  transform: scale(0.85);
+}
+
+@keyframes scene-drift-day {
+  0% { transform: translate(-50%, -50%) scale(1.04); }
+  100% { transform: translate(-56%, -50.5%) scale(1.04); }
+}
+
+@keyframes scene-drift-night {
+  0% { transform: translate(-50%, -50%) scale(1.05); filter: brightness(1); }
+  100% { transform: translate(-54%, -49%) scale(1.05); filter: brightness(1.08); }
+}
+
+@keyframes scene-drift-dark {
+  0% { transform: translate(-50%, -50%) scale(1.03); filter: brightness(0.98); }
+  100% { transform: translate(-52%, -49.5%) scale(1.03); filter: brightness(1.05); }
+}
+
+/* legacy sprite wrapper removed — steam uses wp-mug-steam-anchor */
+
+@keyframes steam-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0.15; }
+  45% { transform: translateY(-22px) scale(1.05); opacity: 0.65; }
+  100% { transform: translateY(-44px) scale(0.9); opacity: 0; }
 }
 
 .os-wallpaper-scanlines {
   position: absolute;
   inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
   background: repeating-linear-gradient(
     0deg,
     transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.04) 2px,
-    rgba(0, 0, 0, 0.04) 4px
+    transparent 3px,
+    rgba(0, 0, 0, 0.03) 3px,
+    rgba(0, 0, 0, 0.03) 6px
   );
-  pointer-events: none;
 }
 
 /* ═══ SHELL ═══ */
@@ -119,6 +230,15 @@ body {
   font-size: 7px;
   letter-spacing: 0.05em;
   white-space: nowrap;
+}
+
+.taskbar-avatar {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  object-position: top center;
+  image-rendering: pixelated;
+  background: transparent;
 }
 
 .taskbar-menu-btn {
@@ -494,6 +614,7 @@ body {
 }
 
 .os-dock-icon {
+  position: relative;
   width: 44px;
   height: 44px;
   background: var(--cream);
@@ -512,7 +633,33 @@ body {
   transform: translateY(-4px) scale(1.08);
 }
 
-.os-dock-icon.is-open::after {
+.os-dock-icon::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  background: rgba(26, 26, 26, 0.92);
+  color: #fff;
+  font-family: var(--pixel-font);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  padding: 4px 8px;
+  border: 2px solid var(--border);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 10;
+}
+
+.os-dock-icon:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.os-dock-icon.is-open::before {
   content: "";
   position: absolute;
   bottom: -4px;
@@ -531,6 +678,39 @@ body {
 }
 
 /* ═══ MUSIC BAR ═══ */
+.bottom-chrome-tab {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5600;
+  font-family: var(--pixel-font);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 6px 14px;
+  background: var(--nav-bg);
+  border: 2px solid var(--border);
+  border-bottom: none;
+  cursor: pointer;
+  box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.bottom-chrome-collapse {
+  position: fixed;
+  bottom: 48px;
+  right: 12px;
+  z-index: 5601;
+  width: 28px;
+  height: 22px;
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  background: var(--cream);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
 .os-music-bar {
   position: fixed;
   bottom: 0;
@@ -554,6 +734,26 @@ body {
   z-index: 200;
   pointer-events: none;
   line-height: 0;
+  animation: portrait-drift var(--scene-drift) ease-in-out infinite alternate;
+}
+
+.desktop-portrait-img {
+  width: min(140px, 20vw);
+  height: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.35));
+  background: transparent;
+  animation: portrait-bob var(--scene-bob) ease-in-out infinite;
+}
+
+@keyframes portrait-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes portrait-drift {
+  0% { transform: translateY(0) translateX(0); }
+  100% { transform: translateY(-4px) translateX(-3px); }
 }
 
 /* ═══ COMPANION + BOOKING ═══ */
@@ -588,6 +788,179 @@ body {
   color: #fff;
   padding: 1px 4px;
   margin-right: 4px;
+}
+
+/* ═══ QUICK STICKIES (Daily Transmission) ═══ */
+.quick-sticky-list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quick-sticky-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  background: #fde047;
+  border: 2px solid var(--border);
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.quick-sticky-item button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.quick-sticky-input {
+  width: 100%;
+  border: 2px solid var(--border);
+  padding: 6px 8px;
+  margin-bottom: 8px;
+  font-family: var(--pixel-font);
+  font-size: 14px;
+}
+
+/* Daily Transmission — scheduling block */
+.daily-schedule-block {
+  margin: 10px 0 14px;
+  padding: 10px;
+  border: 2px solid var(--border);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.daily-schedule-block--primary {
+  border-color: var(--maroon);
+  box-shadow: 3px 3px 0 var(--border);
+}
+
+.daily-schedule-kicker {
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  margin: 0 0 6px;
+}
+
+.daily-schedule-copy {
+  font-size: 13px;
+  line-height: 1.35;
+  margin: 0 0 10px;
+}
+
+.daily-schedule-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--maroon);
+  text-decoration: underline;
+}
+
+.daily-schedule-hint {
+  margin: 8px 0 0;
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.daily-schedule-hint code {
+  font-size: 9px;
+}
+
+/* ═══ WHITEBOARD ═══ */
+.whiteboard-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.whiteboard-colors {
+  display: flex;
+  gap: 6px;
+}
+
+.whiteboard-color {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  padding: 0;
+}
+
+.whiteboard-color.is-active {
+  outline: 2px solid var(--maroon);
+  outline-offset: 2px;
+}
+
+.whiteboard-input {
+  flex: 1;
+  min-width: 200px;
+  border: 2px solid var(--border);
+  padding: 8px 10px;
+  font-family: var(--pixel-font);
+  font-size: 15px;
+  background: #fff;
+}
+
+.whiteboard-canvas {
+  position: relative;
+  min-height: 280px;
+  border: 2px solid var(--border);
+  background-color: #fff;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.whiteboard-note {
+  position: absolute;
+  width: 168px;
+  border: 2px solid var(--border);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+  cursor: grab;
+  user-select: none;
+}
+
+.whiteboard-note:active {
+  cursor: grabbing;
+}
+
+.whiteboard-note-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 6px;
+  font-size: 10px;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+
+.whiteboard-note-head button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.whiteboard-note-body {
+  width: 100%;
+  resize: none;
+  border: none;
+  background: transparent;
+  padding: 6px 8px;
+  font-family: var(--pixel-font);
+  font-size: 14px;
+  color: #1a1a1a;
 }
 
 /* ═══ CALL TAB FOLD ═══ */

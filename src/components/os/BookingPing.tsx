@@ -1,10 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ownerProfile } from "@/content/owner-profile";
+import { readStorage, STORAGE_KEYS, writeStorage } from "@/lib/storage";
 
 export function BookingPing() {
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(true);
+
+  useEffect(() => {
+    setDismissed(readStorage(STORAGE_KEYS.bookingPingDismissed, false));
+  }, []);
+
+  const dismiss = () => {
+    setDismissed(true);
+    writeStorage(STORAGE_KEYS.bookingPingDismissed, true);
+  };
 
   if (dismissed) return null;
 
@@ -15,7 +25,7 @@ export function BookingPing() {
         <button
           type="button"
           className="retro-window-close"
-          onClick={() => setDismissed(true)}
+          onClick={dismiss}
           aria-label="Dismiss"
         >
           ×
